@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的第二个网站</title>
+  <style>
+    /* 重置样式 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      cursor: none; /* 隐藏默认鼠标指针，使用自定义效果 */
+    }
+    /* 动态渐变背景 */
+    body {
+      background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+      background-size: 600% 600%;
+      animation: gradientAnimation 20s ease infinite;
+    }
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    /* 居中显示的文字 */
+    .center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Arial', sans-serif;
+      font-size: 3em;
+      color: #fff;
+      text-align: center;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.8),
+                   0 0 20px rgba(0,255,252,0.6),
+                   0 0 30px rgba(0,255,252,0.4);
+      animation: fadeIn 2s ease-out;
+      pointer-events: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+    /* 发光边框效果 */
+    .center::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      right: -20px;
+      bottom: -20px;
+      border-radius: 10px;
+      background: linear-gradient(45deg, #00fffc, #ff00ff, #00fffc);
+      filter: blur(30px);
+      opacity: 0.6;
+      z-index: -1;
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    /* 鼠标粒子效果 */
+    .particle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: rgba(0, 255, 255, 0.8);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+      animation: particleFade 1s forwards;
+    }
+    @keyframes particleFade {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+      }
+    }
+    /* 自定义鼠标指针 */
+    .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 15px;
+      height: 15px;
+      margin-top: -7.5px;
+      margin-left: -7.5px;
+      border: 2px solid #00fffc;
+      border-radius: 50%;
+      pointer-events: none;
+      transition: transform 0.1s ease;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <div class="center">这是我第二个网站</div>
+  <!-- 自定义鼠标指针 -->
+  <div class="cursor" id="cursor"></div>
+  <script>
+    // 更新自定义鼠标指针位置，并添加文字视差效果和粒子效果
+    document.addEventListener('mousemove', function(e) {
+      // 更新自定义指针
+      const cursor = document.getElementById('cursor');
+      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+
+      // 更新文字视差效果（限制偏移范围）
+      const center = document.querySelector('.center');
+      const offsetX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2) * 10;
+      const offsetY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2) * 10;
+      center.style.transform = `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px)`;
+
+      // 创建粒子效果
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      particle.style.left = e.clientX + 'px';
+      particle.style.top = e.clientY + 'px';
+      document.body.appendChild(particle);
+      particle.addEventListener('animationend', function() {
+        particle.remove();
+      });
+    });
+  </script>
+</body>
+</html>
